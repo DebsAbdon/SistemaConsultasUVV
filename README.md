@@ -17,7 +17,7 @@ Cookie Authentication
 Funcionalidades
 Cadastro de usuários
 Validação dos dados no servidor
-Criptografia/hash das senhas
+Hash das senhas
 Login de usuários
 Autenticação baseada em Cookies
 Logout
@@ -87,7 +87,7 @@ SistemaConsultasUVV
 
 Executando o SQL Server com Docker
 
-Caso o container já exista, ele pode ser iniciado com:
+Caso o container sqlserver-uvv já exista, ele pode ser iniciado com:
 
 docker start sqlserver-uvv
 
@@ -97,7 +97,7 @@ Para verificar se o container está em execução:
 docker ps
 
 
-O container deve aparecer com a porta:
+O container deve aparecer utilizando a porta:
 
 0.0.0.0:1433->1433/tcp
 
@@ -111,7 +111,7 @@ O SQL Server deve estar pronto para receber conexões antes da execução das mi
 
 Criando o container do SQL Server
 
-Caso o ambiente ainda não possua o container sqlserver-uvv, ele pode ser criado utilizando a imagem oficial do SQL Server 2022:
+Caso o ambiente ainda não possua o container sqlserver-uvv, ele pode ser criado utilizando a imagem do SQL Server 2022:
 
 docker run \
   --name sqlserver-uvv \
@@ -121,7 +121,9 @@ docker run \
   -d mcr.microsoft.com/mssql/server:2022-latest
 
 
-Substitua SUA_SENHA_FORTE por uma senha forte para o usuário sa. A senha não deve ser armazenada no repositório.
+Substitua SUA_SENHA_FORTE por uma senha forte para o usuário sa.
+
+Importante: não armazene senhas reais no repositório.
 
 Configuração da Connection String
 
@@ -129,7 +131,7 @@ Por segurança, a Connection String não contém a senha diretamente no appsetti
 
 O projeto utiliza .NET User Secrets para armazenar a Connection String durante o desenvolvimento.
 
-Inicialize os User Secrets na pasta do projeto:
+Na pasta raiz do projeto, inicialize os User Secrets:
 
 dotnet user-secrets init
 
@@ -165,7 +167,7 @@ Para criar ou atualizar o banco de dados conforme as migrations existentes:
 dotnet ef database update
 
 
-Após executar o comando, o banco deverá estar atualizado.
+Após executar o comando, o banco de dados deverá estar atualizado.
 
 Executando o projeto
 
@@ -189,7 +191,7 @@ Por fim, execute a aplicação:
 dotnet run
 
 
-O terminal exibirá o endereço em que a aplicação está disponível, por exemplo:
+O terminal exibirá o endereço em que a aplicação estará disponível, por exemplo:
 
 https://localhost:7245
 
@@ -237,7 +239,7 @@ Entre as validações utilizadas estão:
 [StringLength]
 
 
-Essas validações são utilizadas para garantir que os dados enviados pelos usuários atendam aos requisitos definidos pelo sistema.
+Essas validações garantem que os dados enviados pelos usuários atendam aos requisitos definidos pelo sistema.
 
 Arquitetura
 
@@ -283,6 +285,11 @@ https://github.com/DebsAbdon/SistemaConsultasUVV
 
 Observações
 
-Para executar o projeto corretamente, o SQL Server deve estar em execução e a Connection String deve estar configurada por meio dos User Secrets.
+Para executar o projeto corretamente:
+
+O Docker deve estar instalado e em execução.
+O container do SQL Server deve estar ativo.
+A Connection String deve estar configurada por meio dos User Secrets.
+As migrations devem ser aplicadas com dotnet ef database update.
 
 As informações sensíveis, como senhas do banco de dados, não devem ser adicionadas ao repositório.
